@@ -1,0 +1,115 @@
+# =============================================================================
+# Trackmania Ghost AI - Training Configuration
+# =============================================================================
+
+run:
+  name: "ghost-ai-default"
+  seed: 42
+  device: null  # null = auto-detect (CUDA if available, else CPU)
+  wandb:
+    enabled: false
+    project: "trackmania-ghost-ai"
+    entity: null
+
+# ---------------------------------------------------------------------------
+# Environment
+# ---------------------------------------------------------------------------
+environment:
+  interface: "TM20LIDAR"
+  window_width: 958
+  window_height: 488
+  img_hist_len: 4          # number of stacked LIDAR frames
+  rtgym:
+    time_step_duration: 0.05   # 20 Hz control frequency
+    start_obs_capture: 0.04
+    act_buf_len: 2             # number of previous actions in observation
+    ep_max_length: 2000        # max steps per episode (~100 s)
+    benchmark: false
+
+# ---------------------------------------------------------------------------
+# Observation space (LIDAR + speed + previous actions)
+# ---------------------------------------------------------------------------
+observation:
+  lidar_beams: 19
+  speed_dim: 1
+  # Total flat obs dim = speed(1) + lidar(4*19) + prev_actions(2*3) = 83
+
+# ---------------------------------------------------------------------------
+# Action space (continuous)
+# ---------------------------------------------------------------------------
+action:
+  dim: 3  # [gas, brake, steer]
+  low: -1.0
+  high: 1.0
+
+# ---------------------------------------------------------------------------
+# Reward shaping
+# ---------------------------------------------------------------------------
+reward:
+  velocity_weight: 1.0
+  progress_weight: 5.0
+  checkpoint_bonus: 10.0
+  finish_bonus: 100.0
+  collision_penalty: -5.0
+  off_track_penalty: -2.0
+
+# ---------------------------------------------------------------------------
+# Algorithm: Soft Actor-Critic (SAC)
+# ---------------------------------------------------------------------------
+algorithm:
+  name: "SAC"
+  gamma: 0.995              # discount factor
+  polyak: 0.995             # target network EMA coefficient
+  alpha: 0.37               # initial entropy coefficient
+  learn_entropy_coef: true
+  target_entropy: -7.0      # auto if null, manual override if set
+
+  actor:
+    lr: 0.0003
+    hidden_sizes: [256, 256]
+    activation: "ReLU"
+
+  critic:
+    lr: 0.00005
+    hidden_sizes: [256, 256]
+    activation: "ReLU"
+
+  entropy:
+    lr: 0.0003
+
+# ---------------------------------------------------------------------------
+# Replay buffer
+# ---------------------------------------------------------------------------
+memory:
+  capacity: 1000000
+  batch_size: 256
+  min_samples: 1000        # start training after this many transitions
+
+# ---------------------------------------------------------------------------
+# Training loop
+# ---------------------------------------------------------------------------
+training:
+  epochs: 200
+  rounds: 50               # rounds per epoch
+  steps: 100               # gradient steps per round
+  start_training: 1000     # min samples before first gradient step
+  update_model_interval: 100
+  update_buffer_interval: 100
+
+# ---------------------------------------------------------------------------
+# Networking (Server / Worker / Trainer)
+# ---------------------------------------------------------------------------
+networking:
+  server_ip: "127.0.0.1"
+  server_port: 6666
+  password: "trackmania-ghost-ai"
+  security: null            # null or path to TLS config
+  local_mode: true          # run all components in one process
+
+# ---------------------------------------------------------------------------
+# Checkpointing
+# ---------------------------------------------------------------------------
+checkpoint:
+  dir: "checkpoints"
+  save_interval: 10         # save every N epochs
+  keep_last: 5

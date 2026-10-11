@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trackmania-ghost-ai"
+version = "0.1.0"
+description = "Autonomous AI agent for Trackmania using reinforcement learning with LIDAR-based MLP policy"
+readme = "README.md"
+license = "AGPL-3.0-only"
+requires-python = ">=3.10"
+authors = [
+    { name = "Lukas Viktora", email = "lukas@viktora.cz" },
+]
+
+dependencies = [
+    "tmrl>=0.7.0",
+    "torch>=2.0",
+    "numpy>=1.24",
+    "gymnasium",
+    "rtgym>=0.13",
+    "wandb",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+]
+
+[project.scripts]
+tm-train = "trackmania_ghost_ai.cli:train"
+tm-worker = "trackmania_ghost_ai.cli:worker"
+tm-server = "trackmania_ghost_ai.cli:server"
+tm-evaluate = "trackmania_ghost_ai.cli:evaluate"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
