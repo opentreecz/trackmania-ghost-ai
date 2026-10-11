@@ -9,13 +9,13 @@ framework.
 ## Architecture
 
 ```
-┌─────────────────┐      ┌──────────┐      ┌──────────────────┐
-│  RolloutWorker   │◄────►│  Server   │◄────►│     Trainer      │
-│  (data collect)  │      │  (relay)  │      │  (SAC gradient)  │
-│                  │      │          │      │                  │
-│  TM20 + LIDAR   │      │ TCP/TLS  │      │  MLP ActorCritic │
-│  rtgym env       │      │          │      │  ReplayBuffer    │
-└─────────────────┘      └──────────┘      └──────────────────┘
+┌──────────────────┐       ┌──────────────┐       ┌──────────────────┐
+│  RolloutWorker   │       │    Server     │       │     Trainer      │
+│  (data collect)  │◄─────►│    (relay)    │◄─────►│  (SAC gradient)  │
+│                  │       │              │       │                  │
+│  TM20 + LIDAR   │ samples│   TCP/TLS    │weights│  MLP ActorCritic │
+│  rtgym env       │──────►│              │──────►│  ReplayBuffer    │
+└──────────────────┘       └──────────────┘       └──────────────────┘
 ```
 
 ### Observation space (LIDAR, no images)
