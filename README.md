@@ -146,6 +146,27 @@ All hyperparameters live in `configs/training.yaml`. Key sections:
 | `networking`  | Server IP/port for distributed training      |
 | `checkpoint`  | Save directory, interval, retention          |
 
+## Tutorials
+
+Comprehensive guides in [`docs/tutorials/`](docs/tutorials/):
+
+| # | Tutorial | Description |
+|---|---------|-------------|
+| 01 | [Defining Driving Capabilities](docs/tutorials/01-defining-driving-capabilities.md) | Reward shaping, YAML recipes, custom rewards |
+| 02 | [Writing Driving Parameters](docs/tutorials/02-writing-driving-parameters.md) | Full parameter reference, network architecture, tuning |
+| 03 | [Prerequisites & Installation](docs/tutorials/03-prerequisites-installation.md) | System setup, TM2020, OpenPlanet, TmrlData |
+| 04 | [First Training Run](docs/tutorials/04-first-training-run.md) | Step-by-step from zero to a driving agent |
+| 05 | [Saving & Loading Models](docs/tutorials/05-saving-loading-models.md) | Weights, checkpoints, resume, export |
+| 06 | [Training Workflow](docs/tutorials/06-training-workflow.md) | Epochs/rounds/steps, duration, troubleshooting |
+| 07 | [Replay & Evaluation](docs/tutorials/07-replay-evaluation.md) | Test episodes, watching AI drive, ghost replays |
+| 08 | [Transfer Learning](docs/tutorials/08-transfer-learning.md) | Pre-trained weights, fine-tuning, curriculum |
+| 09 | [Platform: Windows](docs/tutorials/09-platform-windows.md) | Native setup, WSL2 hybrid |
+| 10 | [Platform: Linux](docs/tutorials/10-platform-linux.md) | Proton, headless trainer, Docker |
+| 11 | [Platform: Console](docs/tutorials/11-platform-console.md) | PS/Xbox limitations, hardware approaches |
+| 12 | [Headless & Distributed](docs/tutorials/12-headless-distributed.md) | Multi-machine, Docker, systemd |
+| 13 | [Recording Videos](docs/tutorials/13-recording-videos.md) | Replay Editor, OBS, ffmpeg |
+| 14 | [Advanced Topics](docs/tutorials/14-advanced-topics.md) | Custom networks, CNN, REDQ, custom rewards |
+
 ## Development
 
 ```bash
